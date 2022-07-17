@@ -26,16 +26,18 @@ def wiki_animals_cleaner(input_animals: list):
     """Вернуть список животных, очищенный от невалидных значений -> list"""
     clean_list_animal = []
     taxons = ['род', 'семейство', 'отряд']
+    articles = ['а', 'и', 'но', 'да', 'к', 'как', 'из']
     endings_1 = ['ы', 'и']
     endings_2 = ['ые', 'ие', 'ый', 'ой', 'ий', 'ая', 'ое']
     en_alphabet = 'AaEeIiOoUuBbCcDdFfGgHhJjKkLlMmNnPpQqRrSsTtVvWwXxYyZz()'
-    for animal in input_animals:
-        if len(set(animal) & set(taxons)) > 0 or len(set(animal) & set(en_alphabet)) > 0 \
+    for i, animal in enumerate(input_animals):
+        if len(set([animal]) & set(taxons)) > 0 or len(set(animal) & set(en_alphabet)) > 0 \
                 or len(set([animal[-2:]]) & set(endings_2)) > 0 or len(set([animal[-1:]]) & set(endings_1)) > 0:
             continue
         if animal.find(' ') > 0:
             for slice in animal.split():
-                if len(set([slice[-2:]]) & set(endings_2)) > 0 or len(set([slice[-1:]]) & set(endings_1)) > 0:
+                if len(set([slice[-2:]]) & set(endings_2)) > 0 or len(set([slice[-1:]]) & set(endings_1)) > 0 \
+                        or len(set([slice]) & set(articles)) or (slice.istitle() and i > 0):
                     continue
                 clean_list_animal.append(slice.capitalize())
         else:
