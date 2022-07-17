@@ -6,6 +6,7 @@ import re
 
 
 def wiki_request_sender(input_url: str):
+    """Вернуть декодированный контент результата запроса -> str"""
     response = requests.get(input_url, allow_redirects=True, timeout=1)
     encodings = utils.get_encoding_from_headers(response.headers)
     content = response.content.decode(encoding=encodings)
@@ -13,6 +14,7 @@ def wiki_request_sender(input_url: str):
 
 
 def wiki_page_cutter(input_content: str, first_call=True):
+    """Вернуть блоки html для дальнейшего парсинга -> dict"""
     result = {_: [] for _ in ['animals_html', 'page_switcher_html', 'pages_count', 'stop']}
     cut = input_content.split('<h2>Страницы в категории «Животные по алфавиту»</h2>')[1].split('ul>')[:-4]
     for i, slice in enumerate(cut):
@@ -29,12 +31,14 @@ def wiki_page_cutter(input_content: str, first_call=True):
 
 
 def wiki_next_page_link_re_parser(input_content: str):
+    """Вернуть ссылку для перехода на следующую страницу -> str"""
     reg_next_page = r'Предыдущая страница[</a>]*\) \(<a href="(\S+)"'
     next_page_link = f'https://ru.wikipedia.org{re.search(reg_next_page, *input_content)[1].replace("&amp;", "&")}'
     return next_page_link
 
 
 def wiki_animal_re_parser(input_content: list):
+    """Вернуть список животных, найденных на странице -> list"""
     finding_animals = []
     reg_animal = r'title="([а-яА-ЯёЁ\s\-?\(?\)?]{2,})"'
     for el in input_content:
@@ -44,6 +48,7 @@ def wiki_animal_re_parser(input_content: list):
 
 
 def wiki_animal_validator(input_result: str):
+    """Вернуть результат проверки записи животного-> bool"""
     if bool(re.search('[а-яА-ЯёЁ]', input_result[0])) and \
             not bool(re.search('\wи|\wы|ые|ие', input_result[-2:])) and \
             not bool(re.search('семейство|род|отряд', input_result)):

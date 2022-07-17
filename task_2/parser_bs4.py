@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 
 
 def wiki_animals_parser(input_url: str):
+    """Вернуть ссылку на следующую страницу, список животных на странице, маркер остановки парсинга -> dict"""
     response = requests.get(input_url)
     soup = BeautifulSoup(response.content, 'html.parser')
     _animals = []
@@ -22,6 +23,7 @@ def wiki_animals_parser(input_url: str):
 
 
 def wiki_animals_cleaner(input_animals: list):
+    """Вернуть список животных, очищенный от невалидных значений -> list"""
     clean_list_animal = []
     taxons = ['род', 'семейство', 'отряд']
     endings_1 = ['ы', 'и']

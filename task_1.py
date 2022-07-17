@@ -1,4 +1,5 @@
 def task(array):
+    """Вернуть индекс 0 в получаемом массиве -> int"""
     if type(array) is list:
         for i, value in enumerate(array):
             if value == 0 or value == '0':

@@ -1,5 +1,7 @@
 def appearance(intervals):
+    """Вернуть время общего присутствия ученика и учителя на уроке (в секундах) -> int"""
     def value_checking(checking_list):
+        """Вернуть непересекающиеся временные интервалы -> list"""
         result_list = []
         for x, sample in enumerate(checking_list, start=1):
             for interval in checking_list[x:]:
